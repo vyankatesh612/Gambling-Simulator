@@ -12,6 +12,7 @@ WIN=0
 LOST=0
 AMOUNTWIN=0
 AMOUNTLOST=0
+totalamount=0
 
 FIFTYPERCENTSTAKE=$(($MYSTAKE*50/100))
 MIN_STAKE=$(($MYSTAKE - $FIFTYPERCENTSTAKE))
@@ -49,6 +50,15 @@ function checkWinORLoose()
 		echo "Total no of lost : "$LOST" by "$AMOUNTLOST
 
 		luckyUnlucky
+		if [ $AMOUNTWIN -gt $AMOUNTLOST ]
+		then
+			read -p "Do You Want to continue for next month(Y/N) : " option
+			if [[ $option == "Y" || $option == "y" ]]
+			then
+				checkWinORLoose
+			fi
+		fi
+					
 	}
 
 function luckyUnlucky()
