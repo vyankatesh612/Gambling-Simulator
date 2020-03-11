@@ -1,2 +1,6 @@
 #!/bin/bash -x
-echo "WelCome to gambling simulation"
+echo "WelCome to Gambling Simulation"
+
+#CONSTANT VARIABLES
+STAKE=100
+BET=1
