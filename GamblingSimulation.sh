@@ -6,17 +6,20 @@ MYSTAKE=100
 BET=1
 TOTAL_AMOUNT=0
 TOTAL_DAYS=20
+WIN=0
+LOST=0
+AMOUNTWIN=0
+AMOUNTLOST=0
 
-cash=$MYSTAKE
 FIFTYPERCENTSTAKE=$(($MYSTAKE*50/100))
 MIN_STAKE=$(($MYSTAKE - $FIFTYPERCENTSTAKE))
 MAX_STAKE=$(($MYSTAKE + $FIFTYPERCENTSTAKE))
 #CHECK WIN OR LOOSE
 function checkWinORLoose()
 	{
-		for ((day=1;day<$TOTAL_DAYS;day++))
+		for ((day=1;day<=$TOTAL_DAYS;day++))
 		do
-
+			cash=$MYSTAKE
 			while [[ $cash -lt $MAX_STAKE && $cash -gt $MIN_STAKE ]]
 			do
 
@@ -27,14 +30,16 @@ function checkWinORLoose()
 					cash=$((cash-BET))
 				fi
 			done
-			TOTAL_AMOUNT=$(($TOTAL_AMOUNT+$cash-$MYSTAKE))
+			if [ $cash == $MAX_STAKE ]
+			then
+				AMOUNTWIN=$(($AMOUNTWIN+$cash-$MYSTAKE))
+				((WIN++))
+			else
+				AMOUNTLOST=$(($AMOUNTLOST+$cash))
+				((LOST++))
+			fi
 		done
-		
-		if [[ $TOTAL_AMOUNT -gt 0 ]]
-		then
-			echo "Total Amount win :" $TOTAL_AMOUNT
-		else
-			echo "Total Amount Loose :" $TOTAL_AMOUNT
-		fi
+		echo "Total no of Wins : "$WIN" by "$AMOUNTWIN
+		echo "Total no of lost : "$LOST" by "$AMOUNTLOST		
 	}
 checkWinORLoose
