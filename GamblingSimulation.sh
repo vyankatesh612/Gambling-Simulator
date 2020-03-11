@@ -1,6 +1,8 @@
 #!/bin/bash -x
 echo "WelCome to Gambling Simulation"
 
+declare -a daywisestake
+
 #CONSTANT VARIABLES
 MYSTAKE=100
 BET=1
@@ -30,7 +32,11 @@ function checkWinORLoose()
 					cash=$((cash-BET))
 				fi
 			done
-			if [ $cash == $MAX_STAKE ]
+
+			daywisestake[$day]=$cash
+			echo ${daywisestake[$day]}
+
+			if [ $cash -gt $MYSTAKE ]
 			then
 				AMOUNTWIN=$(($AMOUNTWIN+$cash-$MYSTAKE))
 				((WIN++))
@@ -40,6 +46,29 @@ function checkWinORLoose()
 			fi
 		done
 		echo "Total no of Wins : "$WIN" by "$AMOUNTWIN
-		echo "Total no of lost : "$LOST" by "$AMOUNTLOST		
+		echo "Total no of lost : "$LOST" by "$AMOUNTLOST
+
+		luckyUnlucky
+	}
+
+function luckyUnlucky()
+	{
+		luckyamount=${daywisestake[1]}
+		unluckyamount=${daywisestake[1]}
+
+		for ((i=1;i<${#daywisestake[@]};i++))
+		do
+			if [ $luckyamount -lt ${daywisestake[$i]} ]
+			then
+				luckyamount=${daywisestake[$i]}
+				luckyday=$i
+			fi
+			if [ $unluckyamount -gt ${daywisestake[$i]} ]
+			then
+				unluckyamount=${daywisestake[$i]}
+				unluckyday=$i
+			fi
+		done
 	}
 checkWinORLoose
+
